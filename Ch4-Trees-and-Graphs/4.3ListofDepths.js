@@ -67,28 +67,28 @@ function createLevelLinkedList(root) {
     return result;
 }
 
-// Helper function to convert array representation to binary tree
-function arrayToTree(arr, index = 0) {
-    if (index >= arr.length || arr[index] === null) {
-        return null;
-    }
+// // Helper function to convert array representation to binary tree
+// function arrayToTree(arr, index = 0) {
+//     if (index >= arr.length || arr[index] === null) {
+//         return null;
+//     }
 
-    const root = new TreeNode(arr[index]);
-    root.left = arrayToTree(arr, 2 * index + 1);
-    root.right = arrayToTree(arr, 2 * index + 2);
+//     const root = new TreeNode(arr[index]);
+//     root.left = arrayToTree(arr, 2 * index + 1);
+//     root.right = arrayToTree(arr, 2 * index + 2);
 
-    return root;
-}
+//     return root;
+// }
 
-// Example usage with test cases:
-const testCases = [
-    [3, 9, 20, null, null, 15, 7], // Expected Output: [[3],[9,20],[15,7]]
-    [1], // Expected Output: [[1]]
-    [], // Expected Output: []
-];
+// // Example usage with test cases:
+// const testCases = [
+//     [3, 9, 20, null, null, 15, 7], // Expected Output: [[3],[9,20],[15,7]]
+//     [1], // Expected Output: [[1]]
+//     [], // Expected Output: []
+// ];
 
-for (const testCase of testCases) {
-    const root = arrayToTree(testCase);
-    const linkedLists = createLevelLinkedList(root);
-    console.log(linkedLists);
-}
+// for (const testCase of testCases) {
+//     const root = arrayToTree(testCase);
+//     const linkedLists = createLevelLinkedList(root);
+//     console.log(linkedLists);
+// }
