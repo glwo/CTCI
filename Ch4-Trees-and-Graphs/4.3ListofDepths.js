@@ -27,68 +27,41 @@ class ListNode {
     }
 }
 
-function createLevelLinkedList(root) {
+function createLevelLinkedList(root, lists, level) {
     if (root === null) {
-        return [];
+        return;
     }
 
-    const result = [];
-    let queue = [root];
-
-    while (queue.length > 0) {
-        const levelSize = queue.length;
-        let currentLevel = null;
-        let current = null;
-
-        for (let i = 0; i < levelSize; i++) {
-            const node = queue.shift();
-            const newNode = new ListNode(node.val);
-
-            if (current === null) {
-                current = newNode;
-                currentLevel = newNode;
-            } else {
-                current.next = newNode;
-                current = newNode;
-            }
-
-            if (node.left !== null) {
-                queue.push(node.left);
-            }
-
-            if (node.right !== null) {
-                queue.push(node.right);
-            }
-        }
-
-        result.push(currentLevel);
+    // Ensure that the level exists in the 'lists' array
+    if (lists.length === level) {
+        lists.push([]);
     }
 
-    return result;
+    // Get the linked list for the current level
+    let list = lists[level];
+
+    // Add the current node to the linked list for the current level
+    list.push(root.val);
+
+    // Recursively process the left and right subtrees with an incremented level
+    createLevelLinkedList(root.left, lists, level + 1);
+    createLevelLinkedList(root.right, lists, level + 1);
+
+    // No need to reset 'lists' here; it should accumulate the results correctly
+}
+function createBinaryTree() {
+    const root = new TreeNode(1);
+    root.left = new TreeNode(2);
+    root.right = new TreeNode(3);
+    root.left.left = new TreeNode(4);
+    root.left.right = new TreeNode(5);
+    root.right.left = new TreeNode(6);
+    root.right.right = new TreeNode(7);
+    return root;
 }
 
-// // Helper function to convert array representation to binary tree
-// function arrayToTree(arr, index = 0) {
-//     if (index >= arr.length || arr[index] === null) {
-//         return null;
-//     }
-
-//     const root = new TreeNode(arr[index]);
-//     root.left = arrayToTree(arr, 2 * index + 1);
-//     root.right = arrayToTree(arr, 2 * index + 2);
-
-//     return root;
-// }
-
-// // Example usage with test cases:
-// const testCases = [
-//     [3, 9, 20, null, null, 15, 7], // Expected Output: [[3],[9,20],[15,7]]
-//     [1], // Expected Output: [[1]]
-//     [], // Expected Output: []
-// ];
-
-// for (const testCase of testCases) {
-//     const root = arrayToTree(testCase);
-//     const linkedLists = createLevelLinkedList(root);
-//     console.log(linkedLists);
-// }
+// Usage example:
+const lists = [];
+const root = createBinaryTree();
+createLevelLinkedList(root, lists, 0);
+console.log(lists);

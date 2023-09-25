@@ -18,18 +18,18 @@ class TreeNode {
 }
 
 function sortedArrayToBST(nums) {
-    if (nums.length === 0) {
+    return sortedArrayToBSTHelper(nums, 0, nums.length - 1);
+}
+
+function sortedArrayToBSTHelper(nums, start, end) {
+    if (end < start) {
         return null;
     }
-
-    const middleIndex = Math.floor(nums.length / 2);
-    const root = new TreeNode(nums[middleIndex]);
-
-    // Recursively construct left and right subtrees
-    root.left = sortedArrayToBST(nums.slice(0, middleIndex));
-    root.right = sortedArrayToBST(nums.slice(middleIndex + 1));
-
-    return root;
+    let mid = Math.floor((start + end) / 2);
+    let n = new TreeNode(nums[mid]);
+    n.left = sortedArrayToBSTHelper(nums, start, mid - 1);
+    n.right = sortedArrayToBSTHelper(nums, mid + 1, end);
+    return n;
 }
 
 // Helper function to print the BST for visualization

@@ -13,6 +13,22 @@ Output: false
 Input: root = []
 Output: true
 */
+
+class TreeNode {
+  constructor(val) {
+      this.val = val;
+      this.left = null;
+      this.right = null;
+  }
+}
+
+class ListNode {
+  constructor(val) {
+      this.val = val;
+      this.next = null;
+  }
+}
+
 function getHeight(root) {
   if (root === null) {
     return -1;
@@ -34,38 +50,47 @@ var isBalanced = function (root) {
   }
 };
 
-// // Example 1: Balanced binary tree
-// const tree1 = {
-//     val: 3,
-//     left: { val: 9, left: null, right: null },
-//     right: {
-//       val: 20,
-//       left: { val: 15, left: null, right: null },
-//       right: { val: 7, left: null, right: null },
-//     },
-//   };
-//   console.log(isBalanced(tree1)); // Output: true
+// Better Solution
+function checkHeight(root) {
+  if(root === null) return -1;
 
-//   // Example 2: Unbalanced binary tree
-//   const tree2 = {
-//     val: 1,
-//     left: {
-//       val: 2,
-//       left: { val: 3, left: { val: 4, left: null, right: null }, right: { val: 4, left: null, right: null } },
-//       right: { val: 3, left: null, right: null },
-//     },
-//     right: {
-//       val: 2,
-//       left: null,
-//       right: null,
-//     },
-//   };
-//   console.log(isBalanced(tree2)); // Output: false
+  let leftHeight = checkHeight(root.left);
+  if(leftHeight === Error) return Error;
 
-//   // Example 3: Empty tree (balanced by definition)
-//   const tree3 = null;
-//   console.log(isBalanced(tree3)); // Output: true
+  let rightHeight = checkHeight(root.right);
+  if(rightHeight === Error) return Error;
 
-//   // Example 4: Single node tree (balanced by definition)
-//   const tree4 = { val: 5, left: null, right: null };
-//   console.log(isBalanced(tree4)); // Output: true
+  let heightDiff = leftHeight - rightHeight;
+  if(Math.abs(heightDiff) > 1){
+    return Error
+  } else{
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+}
+
+
+function isBalanced(root){
+  return checkHeight(root) !== Error
+}
+
+// Define the TreeNode class and the checkHeight and isBalanced functions here
+
+// Create a balanced tree
+const balancedRoot = new TreeNode(1);
+balancedRoot.left = new TreeNode(2);
+balancedRoot.right = new TreeNode(3);
+balancedRoot.left.left = new TreeNode(4);
+balancedRoot.left.right = new TreeNode(5);
+
+// Check if the balanced tree is balanced
+console.log("Is the balanced tree balanced?", isBalanced(balancedRoot)); // Should print true
+
+// Create an unbalanced tree
+const unbalancedRoot = new TreeNode(1);
+unbalancedRoot.left = new TreeNode(2);
+unbalancedRoot.right = new TreeNode(3);
+unbalancedRoot.left.left = new TreeNode(4);
+unbalancedRoot.left.left.left = new TreeNode(5); // This makes the tree unbalanced
+
+// Check if the unbalanced tree is balanced
+console.log("Is the unbalanced tree balanced?", isBalanced(unbalancedRoot)); // Should print false
