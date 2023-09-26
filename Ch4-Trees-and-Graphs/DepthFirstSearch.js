@@ -1,13 +1,13 @@
 class Node {
-    constructor(data) {
-        this.data = data;
-        this.adjacent = [];
-        this.visited = false;
-    }
+  constructor(data) {
+    this.data = data;
+    this.adjacent = [];
+    this.visited = false;
+  }
 
-    addAdjacent(node) {
-        this.adjacent.push(node);
-    }
+  addAdjacent(node) {
+    this.adjacent.push(node);
+  }
 }
 
 // Create nodes and edges for a sample graph:
@@ -38,18 +38,37 @@ node5.addAdjacent(node2);
 node5.addAdjacent(node3);
 node5.addAdjacent(node4);
 
-function DFS(root){
-    if(root === null) {
-        return
+function DFS(root) {
+  if (root === null) {
+    return;
+  }
+  console.log(root.data);
+  root.visited = true;
+  root.adjacent.forEach((node) => {
+    if (node.visited === false) {
+      DFS(node);
     }
-    console.log(root.data);
-    root.visited = true;
-    root.adjacent.forEach(node => {
-        if(node.visited === false){
-            DFS(node);
-        }
-    });
+  });
 }
+
+const iterativeDFS = (root) => {
+  if (root === null) return [];
+  const result = [];
+  const stack = [root]; // end of array is top of stack
+  while (stack.length > 0) {
+    const current = stack.pop();
+    result.push(current.val);
+
+    if (current.right) {
+      stack.push(current.right);
+    }
+
+    if (current.left) {
+      stack.push(current.left);
+    }
+  }
+  return result;
+};
 
 console.log("DFS starting from Node 1:");
 DFS(node1);
