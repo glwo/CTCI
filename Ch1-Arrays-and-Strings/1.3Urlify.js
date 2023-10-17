@@ -9,19 +9,19 @@ Input: "Mr John Smith", 13
 Output: "Mr%20John%20Smith"
 */
 
-// const Urlify = function(string, length){
-//     let newstr = "";
+const Urlify = function(string, length){
+    let newstr = "";
 
-//     for(let c of string){
-//         if(c === " "){
-//             newstr+="%20";
-//         } else {
-//             newstr += c;
-//         }
-//     }
+    for(let c of string){
+        if(c === " "){
+            newstr+="%20";
+        } else {
+            newstr += c;
+        }
+    }
 
-//     return newstr
-// }
+    return newstr
+}
 
 // console.log(Urlify("Mr John Smith", 13));
 

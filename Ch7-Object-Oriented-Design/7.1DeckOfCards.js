@@ -5,94 +5,133 @@ Explain how you would subclass the data structures to implement blackjack.
 */
 
 class Card {
-  constructor(number, suit) {
-    this.number = number;
+  constructor(suit, number) {
     this.suit = suit;
+    this.number = number;
+    this.value = `${this.number} ${this.suit}`;
   }
 }
 
 class Deck {
   constructor() {
-    this.stack = [];
-    this.initializeDeck();
+    this.cards = [];
+    this.newDeck();
   }
-
-  initializeDeck() {
-    const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
-    const numbers = [
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "Jack",
-      "Queen",
-      "King",
-      "Ace",
-    ];
-
-    for (const suit of suits) {
-      for (const number of numbers) {
-        this.stack.push(new Card(number, suit));
-      }
+  newDeck() {
+    this.clear();
+    var suits = ['\u2660', '\u2663', '\u2665', '\u2666'];
+    var numbers = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+    suits.forEach((suit) => {
+      numbers.forEach((number) => {
+        this.cards.push(new Card(suit, number));
+      });
+    });
+  }
+  clear() {
+    while (this.cards.length > 0) {
+      this.cards.pop();
     }
   }
-
   shuffle() {
-    for (let i = this.stack.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [this.stack[i], this.stack[j]] = [this.stack[j], this.stack[i]]; // Swap cards
-    }
+    this.cards.sort(() => Math.random() > 0.5 ? 1 : -1);
   }
-
-  dealCard() {
-    if (this.stack.length === 0) {
-      throw new Error('Deck is empty.');
-    }
-    return this.stack.pop();
-  }
-
-  playCard() {
-    return this.stack.pop();
-  }
-
-  addCardToTop(card) {
-    this.stack.push(card);
-  }
-
-  addCardToBottom(card) {
-    this.stack.unshift(card);
+  deal() {
+    return this.cards.pop();
   }
 }
 
+
+
+
+
+// dealer - hand and deck
+class Dealer {
+  constructor() {
+    this.deck = new Deck();
+    this.hand = [];
+  }
+  shuffleCards() {
+    this.deck.shuffle();
+    this.deck.shuffle();
+    this.deck.shuffle();
+  }
+  dealCard() {
+    return this.deck.deal();
+  }
+  receiveCard(card) {
+    this.hand.push(card);
+  }
+}
+
+
+
+
 class Player {
-    constructor(name) {
-      this.name = name;
-      this.hand = [];
-    }
+  constructor() {
+    this.hand = [];
+  }
+  receiveCard(card) {
+    this.hand.push(card);
+  }
+  discardHand() {
+    this.hand = [];
+  }
+}
 
-    addCardToHand(card) {
-      this.hand.push(card);
+
+
+// blackjack game table
+
+class Table {
+  constructor() {
+    this.dealer = new Dealer();
+    this.players = [];
+  }
+  join(player) {
+    if (this.players.length > 5) {
+      console.log('player is full');
+    } else if (this.players.indexOf(player) > -1) {
+      console.log('player is already on table');
+    } else {
+      this.players.push(player);
     }
   }
+  runGame() {
+    var dealer = this.dealer;
+    var players = this.players;
 
-  class BlackjackGame {
-    constructor() {
-      this.deck = new Deck();
-      this.deck.shuffle();
-
-      this.player = new Player('Player');
-      this.dealer = new Player('Dealer');
-
-      this.player.addCardToHand(this.deck.dealCard());
-      this.dealer.addCardToHand(this.deck.dealCard());
-      this.player.addCardToHand(this.deck.dealCard());
-      this.dealer.addCardToHand(this.deck.dealCard());
+    if (players.length === 0) {
+      console.log('no players on table: game did not take place');
+    } else {
+      console.log('start blackjack game!');
+      dealer.shuffleCards();
+      for (var i = 0; i < 2; i++) {
+        players.forEach((player) => {
+          player.receiveCard(dealer.dealCard());
+        });
+        dealer.receiveCard(dealer.dealCard());
+      }
+      console.log('dealer hand', dealer.hand.map((card) => card.value));
+      players.forEach((player) => {
+        console.log('player hand', player.hand.map((card) => card.value));
+      });
     }
-
-    // Implement game logic here...
   }
+}
+
+
+
+/* TEST */
+var table = new Table();
+var eugene = new Player();
+var david = new Player();
+var luis = new Player();
+var eric = new Player();
+
+table.join(eugene);
+table.join(david);
+table.join(luis);
+table.join(eric);
+
+/* build until dealing of first hand */
+table.runGame();

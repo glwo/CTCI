@@ -63,20 +63,20 @@ if (typeof module !== 'undefined' && !module.parent) {
 }
 
 // with hash table
-// function removeDups(head){
-//     let current = head;
-//     let hash = {};
+function removeDups(head){
+    let current = head;
+    let hash = {};
 
-//     while (current && current.next) {
-//         if (!hash[current.next.data]) {
-//             hash[current.next.data] = true;
-//             current = current.next;
-//         } else {
-//             current.next = current.next.next;
-//         }
-//     }
-//     return head;
-// }
+    while (current && current.next) {
+        if (!hash[current.next.data]) {
+            hash[current.next.data] = true;
+            current = current.next;
+        } else {
+            current.next = current.next.next;
+        }
+    }
+    return head;
+}
 
 // two pointers
 function removeDups(head){
